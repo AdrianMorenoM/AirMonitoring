@@ -316,7 +316,6 @@ WiFiCred wifiList[] = {
 - **Sin cifrado:** Los datos viajan en texto plano por el aire. Cualquier dispositivo con el mismo `SYNC_WORD` puede interceptarlos.
 - **Sin autenticación MQTT:** El broker público HiveMQ no tiene usuario ni contraseña.
 - **`volatile` sin barreras de memoria:** El patrón funciona en el ESP32 pero no es portable a otros sistemas sin hardware memory barriers.
-- **R0 sin calibrar:** Las constantes `R0_MQ2` y `R0_MQ135` están en 10 kΩ por defecto; deben medirse en aire limpio para lecturas en ppm.
 - **Un solo nodo:** El `EXPECTED_NODE_ID` está hardcodeado; para múltiples transmisores se necesita una tabla de nodos conocidos.
 
 ### Mejoras sugeridas
