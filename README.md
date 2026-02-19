@@ -115,6 +115,9 @@ if (dequeuePacket(&pkt)) {
     lora_idle = false;
     logEvent("TX", "SEND", "✉️ Seq:%u", pkt.seq);
 }
+
+### Recepción de un paquete y envío de ACK (receptor)
+
 // Callback OnRxDone (simplificado)
 void OnRxDone(uint8_t* payload, uint16_t size, int16_t rssi, int8_t snr) {
     // Parsear JSON...
