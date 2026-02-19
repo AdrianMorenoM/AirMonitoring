@@ -138,3 +138,21 @@ if (ackPending && lora_idle && (millis() - lastAckTime > 50)) {
     lora_idle = false;
     lastAckTime = millis();
 }
+
+Protección de datos compartidos con mutex (transmisor)
+cpp
+// sensorTask escribe
+if (xSemaphoreTake(sensorMutex, portMAX_DELAY)) {
+    sensorData.mq2 = mq2;
+    sensorData.mq135 = mq135;
+    sensorData.dust = gp2y;
+    sensorData.valid = true;
+    xSemaphoreGive(sensorMutex);
+}
+
+// loraTask lee
+SensorData cur;
+if (xSemaphoreTake(sensorMutex, pdMS_TO_TICKS(10))) {
+    cur = sensorData;
+    xSemaphoreGive(sensorMutex);
+}
