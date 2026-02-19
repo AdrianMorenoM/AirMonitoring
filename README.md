@@ -115,3 +115,23 @@ if (dequeuePacket(&pkt)) {
     lora_idle = false;
     logEvent("TX", "SEND", "✉️ Seq:%u", pkt.seq);
 }
+// Callback OnRxDone (simplificado)
+void OnRxDone(uint8_t* payload, uint16_t size, int16_t rssi, int8_t snr) {
+    // Parsear JSON...
+    if ( /* paquete válido */ ) {
+        // Guardar datos y activar mqttFlag si es nuevo
+        ackSequence = seq;
+        ackPending = true;   // Señal para loraTask
+        Radio.Rx(0);
+    }
+}
+
+// En loraTask del receptor
+if (ackPending && lora_idle && (millis() - lastAckTime > 50)) {
+    char ackBuf[32];
+    snprintf(ackBuf, sizeof(ackBuf), "{\"ack\":%u}", ackSequence);
+    Radio.Send((uint8_t*)ackBuf, strlen(ackBuf));
+    ackPending = false;
+    lora_idle = false;
+    lastAckTime = millis();
+}
